@@ -72,9 +72,10 @@
       padding: 20px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       transition: transform 0.2s;
+      cursor: pointer;
     }
 
-    .card:hover { transform: translateY(-3px); }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
 
     .card .tag {
       display: inline-block;
@@ -92,6 +93,13 @@
 
     .card .date { font-size: 12px; color: #999; margin-top: 12px; }
 
+    .card .more {
+      font-size: 13px;
+      color: #0369a1;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+
     footer {
       text-align: center;
       padding: 24px;
@@ -100,6 +108,65 @@
       margin-top: 60px;
       border-top: 1px solid #e2e8f0;
     }
+
+    /* モーダル */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal .tag {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    .modal h2 { font-size: 20px; margin-bottom: 16px; }
+
+    .modal .detail { font-size: 15px; color: #444; line-height: 1.8; }
+
+    .modal .detail h4 { margin: 16px 0 8px; color: #2c3e50; }
+
+    .modal .detail ul { padding-left: 20px; }
+
+    .modal .detail li { margin-bottom: 6px; }
+
+    .modal .date { font-size: 12px; color: #999; margin-top: 20px; }
+
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #999;
+      background: none;
+      border: none;
+    }
+
+    .modal-close:hover { color: #333; }
   </style>
 </head>
 <body>
@@ -115,6 +182,7 @@
     <section class="notice">
       <h2>📢 お知らせ</h2>
       <ul>
+        <li><span>2026/07/02</span>ChatGPTで議事録を自動作成する方法のTipsを追加しました</li>
         <li><span>2026/07/02</span>ポータルサイトを開設しました</li>
         <li><span>2026/07/02</span>ChatAIの社内利用ガイドラインを公開しました</li>
       </ul>
@@ -125,32 +193,44 @@
       <h2 class="section-title">AI活用 Tips</h2>
       <div class="cards">
 
-        <div class="card">
+        <div class="card" onclick="openModal('modal1')">
+          <span class="tag">活用術</span>
+          <h3>ChatGPTで議事録を自動作成する</h3>
+          <p>会議の録音や走り書きメモをそのまま貼り付けるだけで、整形された議事録が完成します。</p>
+          <div class="date">2026/07/02</div>
+          <div class="more">詳細を見る →</div>
+        </div>
+
+        <div class="card" onclick="openModal('modal2')">
           <span class="tag">プロンプト</span>
           <h3>指示は具体的に書く</h3>
           <p>「まとめて」より「3点に絞って箇条書きで要約して」のように、出力形式・量・観点を明示すると精度が上がります。</p>
           <div class="date">2026/07/02</div>
+          <div class="more">詳細を見る →</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="openModal('modal3')">
           <span class="tag">プロンプト</span>
           <h3>役割を与える</h3>
           <p>「あなたはベテランの営業担当です」のように役割を設定すると、文体や視点が変わり、より実用的な回答が得られます。</p>
           <div class="date">2026/07/02</div>
+          <div class="more">詳細を見る →</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="openModal('modal4')">
           <span class="tag">活用術</span>
           <h3>叩き台作成に使う</h3>
           <p>メール・議事録・企画書の初稿をAIに作らせてから人が修正する流れにすると、作業時間を大幅に短縮できます。</p>
           <div class="date">2026/07/02</div>
+          <div class="more">詳細を見る →</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="openModal('modal5')">
           <span class="tag">注意点</span>
           <h3>社外秘情報は入力しない</h3>
           <p>顧客情報・契約内容・個人情報などの社外秘データは外部AIツールに入力しないよう注意してください。</p>
           <div class="date">2026/07/02</div>
+          <div class="more">詳細を見る →</div>
         </div>
 
       </div>
@@ -161,6 +241,145 @@
   <footer>
     &copy; 2026 AI活用情報ポータル｜社内限定
   </footer>
+
+  <!-- モーダル1：議事録 -->
+  <div class="modal-overlay" id="modal1" onclick="closeModal(event, 'modal1')">
+    <div class="modal">
+      <button class="modal-close" onclick="document.getElementById('modal1').classList.remove('active')">✕</button>
+      <span class="tag">活用術</span>
+      <h2>ChatGPTで議事録を自動作成する</h2>
+      <div class="detail">
+        <p>会議の録音テキストや走り書きメモをそのまま貼り付けるだけで、整形された議事録が完成します。</p>
+        <h4>手順</h4>
+        <ul>
+          <li>会議中にメモアプリ等で発言を記録する（箇条書きでOK）</li>
+          <li>ChatGPTを開き、以下のプロンプトを入力する</li>
+          <li>メモをそのまま貼り付けて送信する</li>
+        </ul>
+        <h4>使えるプロンプト例</h4>
+        <p>「以下の会議メモを議事録形式に整形してください。決定事項・アクションアイテム・次回までのタスクを分けて記載してください。」</p>
+        <h4>ポイント</h4>
+        <ul>
+          <li>録音がある場合はWhisper等で文字起こしして貼り付けるとさらに楽</li>
+          <li>固有名詞（社名・人名）は後から確認・修正する</li>
+          <li>社外秘情報が含まれる場合は入力しないこと</li>
+        </ul>
+      </div>
+      <div class="date">2026/07/02</div>
+    </div>
+  </div>
+
+  <!-- モーダル2：具体的な指示 -->
+  <div class="modal-overlay" id="modal2" onclick="closeModal(event, 'modal2')">
+    <div class="modal">
+      <button class="modal-close" onclick="document.getElementById('modal2').classList.remove('active')">✕</button>
+      <span class="tag">プロンプト</span>
+      <h2>指示は具体的に書く</h2>
+      <div class="detail">
+        <p>AIへの指示が曖昧だと、回答も曖昧になります。出力形式・量・観点を明示することで精度が大幅に上がります。</p>
+        <h4>悪い例 → 良い例</h4>
+        <ul>
+          <li>「まとめて」→「3点に絞って箇条書きで要約して」</li>
+          <li>「メールを書いて」→「取引先への納期遅延を詫びるメールを、丁寧な敬語で200字以内で書いて」</li>
+          <li>「改善して」→「文章を読みやすくするために、一文を短くして接続詞を整えてください」</li>
+        </ul>
+        <h4>指定できる要素</h4>
+        <ul>
+          <li>形式（箇条書き・表・文章）</li>
+          <li>文字数・分量</li>
+          <li>対象読者・トーン</li>
+          <li>含めてほしい観点・除外してほしい内容</li>
+        </ul>
+      </div>
+      <div class="date">2026/07/02</div>
+    </div>
+  </div>
+
+  <!-- モーダル3：役割 -->
+  <div class="modal-overlay" id="modal3" onclick="closeModal(event, 'modal3')">
+    <div class="modal">
+      <button class="modal-close" onclick="document.getElementById('modal3').classList.remove('active')">✕</button>
+      <span class="tag">プロンプト</span>
+      <h2>役割を与える</h2>
+      <div class="detail">
+        <p>AIに役割を設定することで、文体や視点が変わり、より実用的な回答が得られます。</p>
+        <h4>役割設定の例</h4>
+        <ul>
+          <li>「あなたはベテランの営業担当です」</li>
+          <li>「あなたは厳しい編集者です」</li>
+          <li>「あなたは新入社員に説明する先輩社員です」</li>
+        </ul>
+        <h4>効果</h4>
+        <ul>
+          <li>専門的な視点からの回答が得られる</li>
+          <li>対象読者に合わせた文体になる</li>
+          <li>見落としがちな観点を補える</li>
+        </ul>
+      </div>
+      <div class="date">2026/07/02</div>
+    </div>
+  </div>
+
+  <!-- モーダル4：叩き台 -->
+  <div class="modal-overlay" id="modal4" onclick="closeModal(event, 'modal4')">
+    <div class="modal">
+      <button class="modal-close" onclick="document.getElementById('modal4').classList.remove('active')">✕</button>
+      <span class="tag">活用術</span>
+      <h2>叩き台作成に使う</h2>
+      <div class="detail">
+        <p>ゼロから書くより、AIに初稿を作らせてから修正する流れにすると作業時間を大幅に短縮できます。</p>
+        <h4>活用シーン</h4>
+        <ul>
+          <li>社内メール・お礼メール・お詫びメール</li>
+          <li>企画書・提案書の構成案</li>
+          <li>議事録・報告書</li>
+          <li>プレゼンのスライド構成</li>
+        </ul>
+        <h4>コツ</h4>
+        <ul>
+          <li>完璧な出力を求めずに「70点の初稿」をもらうイメージで使う</li>
+          <li>背景・目的・対象読者を一緒に伝えると精度が上がる</li>
+          <li>AIの出力を鵜呑みにせず必ず人が確認・修正する</li>
+        </ul>
+      </div>
+      <div class="date">2026/07/02</div>
+    </div>
+  </div>
+
+  <!-- モーダル5：社外秘 -->
+  <div class="modal-overlay" id="modal5" onclick="closeModal(event, 'modal5')">
+    <div class="modal">
+      <button class="modal-close" onclick="document.getElementById('modal5').classList.remove('active')">✕</button>
+      <span class="tag">注意点</span>
+      <h2>社外秘情報は入力しない</h2>
+      <div class="detail">
+        <p>外部のAIツールに入力した情報は、サービスの学習データに使われる可能性があります。以下の情報は入力しないようにしてください。</p>
+        <h4>入力してはいけない情報</h4>
+        <ul>
+          <li>顧客名・顧客の連絡先・契約内容</li>
+          <li>社員の個人情報</li>
+          <li>未発表の製品・サービス情報</li>
+          <li>財務情報・売上データ</li>
+          <li>社外秘・機密と指定された資料の内容</li>
+        </ul>
+        <h4>判断に迷ったら</h4>
+        <p>「この情報が外部に漏れたら困るか？」を基準に判断してください。迷う場合は上長に確認しましょう。</p>
+      </div>
+      <div class="date">2026/07/02</div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(event, id) {
+      if (event.target === document.getElementById(id)) {
+        document.getElementById(id).classList.remove('active');
+      }
+    }
+  </script>
 
 </body>
 </html>
