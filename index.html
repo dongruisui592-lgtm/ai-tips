@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Noto Sans JP', sans-serif;
@@ -30,10 +31,9 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(14px);
-      border-bottom: 3px solid #60a5fa;
-      padding: 0 32px;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1d4ed8 100%);
+      padding: 0 40px;
+      box-shadow: 0 4px 24px rgba(30,58,138,0.4);
     }
 
     .header-inner {
@@ -42,39 +42,92 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 64px;
+      height: 72px;
     }
 
     .header-logo {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 14px;
     }
 
-    .header-logo img { width: 38px; height: 38px; object-fit: contain; }
+    .header-logo-img-wrap {
+      position: relative;
+      width: 48px;
+      height: 48px;
+    }
 
-    .header-logo span {
+    .header-logo-img-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #60a5fa, #0ea5e9);
+      z-index: 0;
+    }
+
+    .header-logo img {
+      position: relative;
+      z-index: 1;
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 50%;
+      background: white;
+      padding: 4px;
+    }
+
+    .header-logo-text { display: flex; flex-direction: column; gap: 2px; }
+
+    .header-logo-title {
       font-size: 17px;
       font-weight: 900;
-      background: linear-gradient(90deg, #2563eb, #0ea5e9);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: white;
+      letter-spacing: 0.03em;
     }
+
+    .header-logo-sub {
+      font-size: 10px;
+      color: #93c5fd;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+
+    .header-right { display: flex; align-items: center; gap: 16px; }
+
+    .header-nav {
+      display: flex;
+      gap: 24px;
+    }
+
+    .header-nav a {
+      font-size: 13px;
+      font-weight: 700;
+      color: #bfdbfe;
+      text-decoration: none;
+      transition: color 0.2s;
+      letter-spacing: 0.03em;
+    }
+
+    .header-nav a:hover { color: white; }
 
     .header-badge {
       font-size: 11px;
       font-weight: 700;
-      background: linear-gradient(90deg, #3b82f6, #0ea5e9);
-      color: white;
+      background: rgba(255,255,255,0.15);
+      color: #7dd3fc;
+      border: 1px solid rgba(125,211,252,0.4);
       padding: 5px 14px;
       border-radius: 20px;
+      letter-spacing: 0.04em;
+      backdrop-filter: blur(4px);
     }
 
     /* ヒーロー */
     .hero {
       position: relative;
       background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 45%, #0ea5e9 100%);
-      padding: 64px 40px 72px;
+      padding: 64px 40px 80px;
       text-align: center;
       overflow: hidden;
       z-index: 1;
@@ -84,9 +137,11 @@
     .hero-content { position: relative; z-index: 1; }
 
     .hero-mascot {
-      width: 90px;
-      margin-bottom: 18px;
-      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.25));
       animation: float 3s ease-in-out infinite;
     }
 
@@ -125,7 +180,7 @@
       border-radius: 16px;
       padding: 20px 24px;
       margin-bottom: 52px;
-      box-shadow: 0 6px 24px rgba(59,130,246,0.12), 4px 4px 0 #bfdbfe;
+      box-shadow: 0 6px 24px rgba(59,130,246,0.1), 4px 4px 0 #bfdbfe;
     }
 
     .notice h2 { font-size: 13px; font-weight: 700; color: #2563eb; letter-spacing: 0.08em; margin-bottom: 14px; }
@@ -187,56 +242,90 @@
     }
 
     .card {
-      background: white;
       border-radius: 20px;
-      padding: 24px;
       cursor: pointer;
       transition: all 0.25s ease;
-      position: relative;
       overflow: hidden;
-      border: 2px solid #e0f0ff;
-      /* 正方形 */
       aspect-ratio: 1 / 1;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      box-shadow: 0 4px 20px rgba(30,58,138,0.15);
+      position: relative;
     }
 
-    /* カードごとの上部アクセントカラー */
-    .card-1 { border-top: 5px solid #3b82f6; }
-    .card-2 { border-top: 5px solid #8b5cf6; }
-    .card-3 { border-top: 5px solid #06b6d4; }
-    .card-4 { border-top: 5px solid #10b981; }
-    .card-5 { border-top: 5px solid #f59e0b; }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      bottom: -30px; right: -30px;
-      width: 100px; height: 100px;
-      border-radius: 50%;
-      opacity: 0.06;
-      transition: opacity 0.25s;
-    }
-    .card-1::before { background: #3b82f6; }
-    .card-2::before { background: #8b5cf6; }
-    .card-3::before { background: #06b6d4; }
-    .card-4::before { background: #10b981; }
-    .card-5::before { background: #f59e0b; }
+    .card-1 { background: linear-gradient(160deg, #1e3a8a 0%, #3b82f6 100%); }
+    .card-2 { background: linear-gradient(160deg, #4c1d95 0%, #8b5cf6 100%); }
+    .card-3 { background: linear-gradient(160deg, #164e63 0%, #06b6d4 100%); }
+    .card-4 { background: linear-gradient(160deg, #064e3b 0%, #10b981 100%); }
+    .card-5 { background: linear-gradient(160deg, #78350f 0%, #f59e0b 100%); }
 
     .card:hover {
-      transform: translateY(-6px) rotate(-1deg);
-      box-shadow: 0 16px 40px rgba(59,130,246,0.18);
-      border-color: #93c5fd;
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(30,58,138,0.25);
+      filter: brightness(1.08);
     }
 
-    .card:hover::before { opacity: 0.12; }
-
-    .card-top {
+    .card-header {
+      position: relative;
+      padding: 20px 20px 12px;
+      overflow: hidden;
+      flex: 1;
       display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
+      flex-direction: column;
+      justify-content: flex-start;
     }
+
+    .card-step {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+    }
+
+    .card-header h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: white;
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    /* 透かし数字 */
+    .card-watermark {
+      position: absolute;
+      right: 12px;
+      bottom: 0;
+      font-size: 80px;
+      font-weight: 900;
+      color: rgba(255,255,255,0.12);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    /* カードボディ */
+    .card-body {
+      padding: 0 20px 16px;
+      flex-shrink: 0;
+    }
+
+    .card-btn {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.85);
+      border-top: 1px solid rgba(255,255,255,0.25);
+      padding-top: 10px;
+      width: 100%;
+      transition: color 0.2s;
+    }
+
+    .card:hover .card-btn { color: white; }
 
     .tag {
       font-size: 11px;
@@ -250,39 +339,6 @@
     .tag-tips   { background: #d1fae5; color: #059669; }
     .tag-warn   { background: #fef3c7; color: #d97706; }
 
-    .card-icon { font-size: 28px; line-height: 1; }
-
-    .card h3 {
-      font-size: 15px;
-      font-weight: 700;
-      color: #1a2a4a;
-      line-height: 1.4;
-      margin: 12px 0 8px;
-    }
-
-    .card p { font-size: 12px; color: #64748b; line-height: 1.7; flex: 1; }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 12px;
-    }
-
-    .card .date { font-size: 11px; color: #94a3b8; }
-
-    .card .more {
-      font-size: 12px;
-      font-weight: 700;
-      color: #3b82f6;
-      background: #eff6ff;
-      padding: 4px 10px;
-      border-radius: 8px;
-      transition: background 0.2s;
-    }
-
-    .card:hover .more { background: #dbeafe; }
-
     /* フッター */
     footer {
       background: linear-gradient(135deg,#1e3a8a,#1d4ed8);
@@ -292,9 +348,24 @@
       z-index: 1;
     }
 
-    .footer-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:center; gap:10px; }
-    footer img { width:32px; object-fit:contain; opacity:0.85; }
-    footer p { font-size:12px; color:#93c5fd; }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    footer img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      opacity: 0.9;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+
+    footer p { font-size: 12px; color: #93c5fd; }
 
     /* モーダル */
     .modal-overlay {
@@ -336,9 +407,7 @@
     }
 
     .modal-close:hover { color: #1a2a4a; }
-
     .modal h2 { font-size: 22px; font-weight: 700; color: #1a2a4a; margin: 12px 0 20px; line-height: 1.4; }
-
     .modal .detail { font-size: 14px; color: #475569; line-height: 1.8; }
     .modal .detail p { margin-bottom: 12px; }
 
@@ -361,194 +430,96 @@
 </head>
 <body>
 
-  <!-- 固定背景：ポップなキャラクターたち -->
+  <!-- 固定背景：幾何学的なプロフェッショナルデザイン -->
   <svg class="bg-fixed" viewBox="0 0 1440 960" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <radialGradient id="bgR" cx="50%" cy="40%" r="70%">
-        <stop offset="0%" style="stop-color:#e0f2fe"/>
-        <stop offset="100%" style="stop-color:#dbeafe"/>
+      <radialGradient id="bg1" cx="20%" cy="20%" r="60%">
+        <stop offset="0%" style="stop-color:#dbeafe;stop-opacity:1"/>
+        <stop offset="100%" style="stop-color:#f0f9ff;stop-opacity:1"/>
       </radialGradient>
+      <radialGradient id="bg2" cx="80%" cy="80%" r="60%">
+        <stop offset="0%" style="stop-color:#e0f2fe;stop-opacity:1"/>
+        <stop offset="100%" style="stop-color:#f0f9ff;stop-opacity:0"/>
+      </radialGradient>
+      <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.3"/>
+        <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:0.05"/>
+      </linearGradient>
     </defs>
-    <rect width="1440" height="960" fill="url(#bgR)"/>
 
-    <!-- ===== 左上エリア：猫キャラ ===== -->
-    <g transform="translate(30,120)" opacity="0.28">
-      <!-- 体 -->
-      <ellipse cx="55" cy="110" rx="42" ry="48" fill="#f9a8d4"/>
-      <!-- 頭 -->
-      <circle cx="55" cy="58" r="36" fill="#f9a8d4"/>
-      <!-- 耳 -->
-      <polygon points="28,36 18,8 44,28" fill="#f9a8d4"/>
-      <polygon points="82,36 92,8 66,28" fill="#f9a8d4"/>
-      <polygon points="30,34 22,14 42,28" fill="#fda4af"/>
-      <polygon points="80,34 88,14 68,28" fill="#fda4af"/>
-      <!-- 顔 -->
-      <circle cx="44" cy="54" r="7" fill="white"/>
-      <circle cx="66" cy="54" r="7" fill="white"/>
-      <circle cx="46" cy="56" r="4" fill="#1e3a8a"/>
-      <circle cx="68" cy="56" r="4" fill="#1e3a8a"/>
-      <ellipse cx="55" cy="70" rx="5" ry="4" fill="#fda4af"/>
-      <!-- ひげ -->
-      <line x1="20" y1="68" x2="46" y2="72" stroke="#be185d" stroke-width="1.5"/>
-      <line x1="20" y1="74" x2="46" y2="74" stroke="#be185d" stroke-width="1.5"/>
-      <line x1="64" y1="72" x2="90" y2="68" stroke="#be185d" stroke-width="1.5"/>
-      <line x1="64" y1="74" x2="90" y2="74" stroke="#be185d" stroke-width="1.5"/>
-      <!-- 腕 -->
-      <ellipse cx="16" cy="108" rx="12" ry="20" rx="12" fill="#f9a8d4" transform="rotate(-15,16,108)"/>
-      <ellipse cx="94" cy="108" rx="12" ry="20" fill="#f9a8d4" transform="rotate(15,94,108)"/>
-      <!-- 足 -->
-      <ellipse cx="36" cy="154" rx="18" ry="12" fill="#f9a8d4"/>
-      <ellipse cx="74" cy="154" rx="18" ry="12" fill="#f9a8d4"/>
-      <!-- しっぽ -->
-      <path d="M 90 130 Q 130 100 120 150 Q 110 180 90 160" stroke="#f9a8d4" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <rect width="1440" height="960" fill="url(#bg1)"/>
+    <rect width="1440" height="960" fill="url(#bg2)"/>
+
+    <!-- 大きな円弧 -->
+    <circle cx="-100" cy="200" r="400" fill="none" stroke="#3b82f6" stroke-width="1.5" opacity="0.12"/>
+    <circle cx="-100" cy="200" r="550" fill="none" stroke="#0ea5e9" stroke-width="1" opacity="0.08"/>
+    <circle cx="1540" cy="800" r="450" fill="none" stroke="#6366f1" stroke-width="1.5" opacity="0.1"/>
+    <circle cx="1540" cy="800" r="600" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.06"/>
+
+    <!-- 対角線グリッド -->
+    <g opacity="0.05" stroke="#2563eb" stroke-width="1">
+      <line x1="0" y1="240" x2="1440" y2="240"/>
+      <line x1="0" y1="480" x2="1440" y2="480"/>
+      <line x1="0" y1="720" x2="1440" y2="720"/>
+      <line x1="240" y1="0" x2="240" y2="960"/>
+      <line x1="480" y1="0" x2="480" y2="960"/>
+      <line x1="720" y1="0" x2="720" y2="960"/>
+      <line x1="960" y1="0" x2="960" y2="960"/>
+      <line x1="1200" y1="0" x2="1200" y2="960"/>
     </g>
 
-    <!-- ===== 左下エリア：歩く人 ===== -->
-    <g transform="translate(20,680)" opacity="0.22">
-      <circle cx="38" cy="22" r="20" fill="#60a5fa"/>
-      <!-- 顔パーツ -->
-      <circle cx="31" cy="20" r="3" fill="#1e3a8a"/>
-      <circle cx="45" cy="20" r="3" fill="#1e3a8a"/>
-      <path d="M 31 28 Q 38 34 45 28" stroke="#1e3a8a" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <!-- 体 -->
-      <rect x="22" y="42" width="32" height="44" rx="10" fill="#3b82f6"/>
-      <!-- 腕 -->
-      <line x1="22" y1="54" x2="4" y2="76" stroke="#60a5fa" stroke-width="10" stroke-linecap="round"/>
-      <line x1="54" y1="54" x2="70" y2="72" stroke="#60a5fa" stroke-width="10" stroke-linecap="round"/>
-      <!-- 足 -->
-      <line x1="30" y1="86" x2="18" y2="118" stroke="#2563eb" stroke-width="10" stroke-linecap="round"/>
-      <line x1="46" y1="86" x2="58" y2="118" stroke="#2563eb" stroke-width="10" stroke-linecap="round"/>
+    <!-- 斜めライン -->
+    <g opacity="0.07" stroke="#3b82f6" stroke-width="1">
+      <line x1="0" y1="0" x2="480" y2="960"/>
+      <line x1="240" y1="0" x2="720" y2="960"/>
+      <line x1="720" y1="0" x2="1200" y2="960"/>
+      <line x1="960" y1="0" x2="1440" y2="960"/>
     </g>
 
-    <!-- ===== 右上エリア：うさぎ ===== -->
-    <g transform="translate(1300,80)" opacity="0.26">
-      <!-- 耳 -->
-      <ellipse cx="28" cy="30" rx="10" ry="36" fill="#a5f3fc"/>
-      <ellipse cx="58" cy="30" rx="10" ry="36" fill="#a5f3fc"/>
-      <ellipse cx="28" cy="30" rx="6" ry="28" fill="#f9a8d4"/>
-      <ellipse cx="58" cy="30" rx="6" ry="28" fill="#f9a8d4"/>
-      <!-- 頭 -->
-      <circle cx="43" cy="72" r="34" fill="#e0f2fe"/>
-      <!-- 顔 -->
-      <circle cx="33" cy="68" r="6" fill="white"/>
-      <circle cx="53" cy="68" r="6" fill="white"/>
-      <circle cx="35" cy="70" r="4" fill="#0284c7"/>
-      <circle cx="55" cy="70" r="4" fill="#0284c7"/>
-      <ellipse cx="43" cy="82" rx="5" ry="3" fill="#f9a8d4"/>
-      <path d="M 33 88 Q 43 95 53 88" stroke="#0284c7" stroke-width="2" fill="none"/>
-      <!-- 体 -->
-      <ellipse cx="43" cy="136" rx="36" ry="44" fill="#e0f2fe"/>
-      <!-- 腕 -->
-      <ellipse cx="8" cy="126" rx="10" ry="22" fill="#e0f2fe" transform="rotate(-20,8,126)"/>
-      <ellipse cx="78" cy="126" rx="10" ry="22" fill="#e0f2fe" transform="rotate(20,78,126)"/>
-      <!-- 足 -->
-      <ellipse cx="28" cy="176" rx="18" ry="10" fill="#e0f2fe"/>
-      <ellipse cx="58" cy="176" rx="18" ry="10" fill="#e0f2fe"/>
+    <!-- 六角形 -->
+    <g opacity="0.08" fill="none" stroke="#3b82f6" stroke-width="1.5">
+      <polygon points="120,80 160,57 200,80 200,126 160,149 120,126"/>
+      <polygon points="1280,700 1320,677 1360,700 1360,746 1320,769 1280,746"/>
+      <polygon points="680,820 720,797 760,820 760,866 720,889 680,866"/>
     </g>
 
-    <!-- ===== 右下エリア：女の子キャラ ===== -->
-    <g transform="translate(1310,700)" opacity="0.22">
-      <!-- 頭 -->
-      <circle cx="42" cy="26" r="24" fill="#fde68a"/>
-      <!-- 髪 -->
-      <path d="M 18 20 Q 8 0 26 4 Q 20 14 22 22" fill="#92400e"/>
-      <path d="M 66 20 Q 76 0 58 4 Q 64 14 62 22" fill="#92400e"/>
-      <ellipse cx="42" cy="10" rx="22" ry="10" fill="#92400e"/>
-      <!-- 顔 -->
-      <circle cx="34" cy="24" r="4" fill="#1e3a8a"/>
-      <circle cx="50" cy="24" r="4" fill="#1e3a8a"/>
-      <ellipse cx="30" cy="30" rx="4" ry="2" fill="#fca5a5" opacity="0.8"/>
-      <ellipse cx="54" cy="30" rx="4" ry="2" fill="#fca5a5" opacity="0.8"/>
-      <path d="M 34 36 Q 42 42 50 36" stroke="#92400e" stroke-width="2" fill="none"/>
-      <!-- 体（ワンピース） -->
-      <path d="M 18 50 Q 12 90 16 110 Q 42 120 68 110 Q 72 90 66 50 Q 54 60 42 60 Q 30 60 18 50Z" fill="#818cf8"/>
-      <!-- 腕 -->
-      <line x1="18" y1="60" x2="4" y2="88" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
-      <line x1="66" y1="60" x2="80" y2="88" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
-      <!-- 足 -->
-      <line x1="30" y1="110" x2="22" y2="140" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
-      <line x1="54" y1="110" x2="62" y2="140" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
+    <!-- ドット群（左上・右下） -->
+    <g opacity="0.15" fill="#3b82f6">
+      <circle cx="60" cy="60" r="3"/><circle cx="100" cy="60" r="3"/><circle cx="140" cy="60" r="3"/>
+      <circle cx="60" cy="100" r="3"/><circle cx="100" cy="100" r="3"/><circle cx="140" cy="100" r="3"/>
+      <circle cx="60" cy="140" r="3"/><circle cx="100" cy="140" r="3"/><circle cx="140" cy="140" r="3"/>
+    </g>
+    <g opacity="0.12" fill="#0ea5e9">
+      <circle cx="1300" cy="820" r="3"/><circle cx="1340" cy="820" r="3"/><circle cx="1380" cy="820" r="3"/>
+      <circle cx="1300" cy="860" r="3"/><circle cx="1340" cy="860" r="3"/><circle cx="1380" cy="860" r="3"/>
+      <circle cx="1300" cy="900" r="3"/><circle cx="1340" cy="900" r="3"/><circle cx="1380" cy="900" r="3"/>
     </g>
 
-    <!-- ===== 中央右エリア：犬キャラ ===== -->
-    <g transform="translate(1180,420)" opacity="0.2">
-      <!-- 体 -->
-      <ellipse cx="50" cy="100" rx="40" ry="44" fill="#fcd34d"/>
-      <!-- 頭 -->
-      <circle cx="50" cy="52" r="36" fill="#fcd34d"/>
-      <!-- 耳 -->
-      <ellipse cx="20" cy="44" rx="14" ry="22" fill="#f59e0b" transform="rotate(-20,20,44)"/>
-      <ellipse cx="80" cy="44" rx="14" ry="22" fill="#f59e0b" transform="rotate(20,80,44)"/>
-      <!-- 顔 -->
-      <ellipse cx="50" cy="60" rx="22" ry="16" fill="#f59e0b"/>
-      <circle cx="38" cy="46" r="6" fill="white"/>
-      <circle cx="62" cy="46" r="6" fill="white"/>
-      <circle cx="40" cy="48" r="4" fill="#1e3a8a"/>
-      <circle cx="64" cy="48" r="4" fill="#1e3a8a"/>
-      <ellipse cx="50" cy="62" rx="8" ry="6" fill="#1e3a8a"/>
-      <!-- 尾 -->
-      <path d="M 88 90 Q 120 60 115 100" stroke="#fcd34d" stroke-width="10" fill="none" stroke-linecap="round"/>
-      <!-- 足 -->
-      <ellipse cx="28" cy="140" rx="18" ry="10" fill="#fcd34d"/>
-      <ellipse cx="72" cy="140" rx="18" ry="10" fill="#fcd34d"/>
-    </g>
-
-    <!-- ===== 中央左エリア：男の子キャラ ===== -->
-    <g transform="translate(80,420)" opacity="0.2">
-      <circle cx="42" cy="26" r="24" fill="#fde68a"/>
-      <path d="M 18 18 Q 20 0 42 2 Q 64 0 66 18" fill="#1e3a8a"/>
-      <circle cx="33" cy="24" r="4" fill="#1e3a8a"/>
-      <circle cx="51" cy="24" r="4" fill="#1e3a8a"/>
-      <ellipse cx="30" cy="30" rx="4" ry="2" fill="#fca5a5" opacity="0.7"/>
-      <ellipse cx="54" cy="30" rx="4" ry="2" fill="#fca5a5" opacity="0.7"/>
-      <path d="M 34 36 Q 42 42 50 36" stroke="#92400e" stroke-width="2" fill="none"/>
-      <rect x="20" y="50" width="44" height="54" rx="10" fill="#34d399"/>
-      <line x1="20" y1="62" x2="4" y2="90" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
-      <line x1="64" y1="62" x2="80" y2="90" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
-      <line x1="30" y1="104" x2="22" y2="134" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
-      <line x1="54" y1="104" x2="62" y2="134" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
-    </g>
-
-    <!-- カラフルな星・泡 -->
-    <g opacity="0.35">
-      <polygon points="220,90 224,104 238,104 228,113 231,127 220,119 209,127 212,113 202,104 216,104" fill="#fbbf24"/>
-      <polygon points="1050,180 1053,190 1063,190 1056,196 1058,206 1050,200 1042,206 1044,196 1037,190 1047,190" fill="#34d399"/>
-      <polygon points="680,820 683,830 693,830 686,836 688,846 680,840 672,846 674,836 667,830 677,830" fill="#f472b6"/>
-      <polygon points="160,700 163,710 173,710 166,716 168,726 160,720 152,726 154,716 147,710 157,710" fill="#a78bfa"/>
-      <polygon points="800,100 803,110 813,110 806,116 808,126 800,120 792,126 794,116 787,110 797,110" fill="#60a5fa"/>
-      <polygon points="1250,600 1253,608 1261,608 1255,613 1257,621 1250,616 1243,621 1245,613 1239,608 1247,608" fill="#fb923c"/>
-    </g>
-
-    <!-- カラフルな円バブル -->
-    <circle cx="350" cy="200" r="60" fill="rgba(167,243,208,0.2)"/>
-    <circle cx="1050" cy="700" r="80" fill="rgba(196,181,253,0.18)"/>
-    <circle cx="700" cy="500" r="50" fill="rgba(253,186,116,0.15)"/>
-    <circle cx="150" cy="300" r="40" fill="rgba(125,211,252,0.2)"/>
-    <circle cx="1350" cy="350" r="45" fill="rgba(252,165,165,0.18)"/>
-
-    <!-- AIネットワーク線 -->
-    <g opacity="0.1">
-      <line x1="300" y1="200" x2="600" y2="350" stroke="#3b82f6" stroke-width="2"/>
-      <line x1="600" y1="350" x2="900" y2="250" stroke="#3b82f6" stroke-width="2"/>
-      <line x1="900" y1="250" x2="1200" y2="400" stroke="#3b82f6" stroke-width="2"/>
-      <line x1="600" y1="350" x2="700" y2="600" stroke="#3b82f6" stroke-width="2"/>
-      <line x1="900" y1="250" x2="700" y2="600" stroke="#3b82f6" stroke-width="2"/>
-      <circle cx="300" cy="200" r="8" fill="#3b82f6" opacity="0.5"/>
-      <circle cx="600" cy="350" r="8" fill="#3b82f6" opacity="0.5"/>
-      <circle cx="900" cy="250" r="8" fill="#3b82f6" opacity="0.5"/>
-      <circle cx="1200" cy="400" r="8" fill="#3b82f6" opacity="0.5"/>
-      <circle cx="700" cy="600" r="8" fill="#3b82f6" opacity="0.5"/>
-    </g>
+    <!-- グラデーション吹き出し（ぼかし） -->
+    <ellipse cx="300" cy="700" rx="200" ry="150" fill="#bfdbfe" opacity="0.12"/>
+    <ellipse cx="1100" cy="300" rx="220" ry="160" fill="#a5f3fc" opacity="0.1"/>
+    <ellipse cx="720" cy="500" rx="160" ry="120" fill="#c7d2fe" opacity="0.08"/>
   </svg>
 
   <!-- ヘッダー -->
   <header>
     <div class="header-inner">
       <div class="header-logo">
-        <img src="mascot.png" alt="マスコット">
-        <span>AI活用情報ポータル</span>
+        <div class="header-logo-img-wrap">
+          <img src="mascot.png" alt="マスコット">
+        </div>
+        <div class="header-logo-text">
+          <span class="header-logo-title">AI活用情報ポータル</span>
+          <span class="header-logo-sub">社内向け AI ナレッジベース</span>
+        </div>
       </div>
-      <span class="header-badge">社内限定</span>
+      <div class="header-right">
+        <nav class="header-nav">
+          <a href="#notice">お知らせ</a>
+          <a href="#tips">Tips一覧</a>
+        </nav>
+        <span class="header-badge">🔒 社内限定</span>
+      </div>
     </div>
   </header>
 
@@ -557,13 +528,13 @@
     <svg class="hero-bg" viewBox="0 0 1200 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse">
-          <circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.08)"/>
+          <circle cx="20" cy="20" r="1.5" fill="rgba(255,255,255,0.1)"/>
         </pattern>
       </defs>
       <rect width="1200" height="280" fill="url(#dots)"/>
-      <circle cx="150" cy="60" r="80" fill="rgba(255,255,255,0.04)"/>
-      <circle cx="1050" cy="80" r="100" fill="rgba(255,255,255,0.04)"/>
-      <circle cx="600" cy="240" r="60" fill="rgba(255,255,255,0.03)"/>
+      <circle cx="150" cy="60" r="100" fill="rgba(255,255,255,0.04)"/>
+      <circle cx="1050" cy="80" r="120" fill="rgba(255,255,255,0.04)"/>
+      <line x1="0" y1="280" x2="1200" y2="0" stroke="rgba(255,255,255,0.06)" stroke-width="80"/>
     </svg>
     <div class="hero-content">
       <img src="mascot.png" alt="マスコット" class="hero-mascot">
@@ -580,7 +551,7 @@
 
   <main>
     <!-- お知らせ -->
-    <section class="notice">
+    <section class="notice" id="notice">
       <h2>📢 お知らせ</h2>
       <ul>
         <li><span>2026/07/02</span>ChatGPTで議事録を自動作成する方法のTipsを追加しました</li>
@@ -590,7 +561,7 @@
     </section>
 
     <!-- Tips -->
-    <section>
+    <section id="tips">
       <div class="section-header">
         <h2 class="section-title">✨ AI活用 Tips</h2>
         <span class="section-count">5 記事</span>
@@ -598,77 +569,57 @@
       <div class="cards">
 
         <div class="card card-1" onclick="openModal('modal1')">
-          <div>
-            <div class="card-top">
-              <span class="tag tag-tips">活用術</span>
-              <span class="card-icon">📝</span>
-            </div>
-            <h3>ChatGPTで議事録を自動作成する</h3>
-            <p>会議の録音や走り書きメモをそのまま貼り付けるだけで、整形された議事録が完成します。</p>
+          <div class="card-header">
+            <div class="card-step">TIPS 1</div>
+            <h3>議事録を自動作成する</h3>
+            <span class="card-watermark">1</span>
           </div>
-          <div class="card-footer">
-            <span class="date">2026/07/02</span>
-            <span class="more">詳細を見る →</span>
+          <div class="card-body">
+            <span class="card-btn">→ 詳細を見る</span>
           </div>
         </div>
 
         <div class="card card-2" onclick="openModal('modal2')">
-          <div>
-            <div class="card-top">
-              <span class="tag tag-prompt">プロンプト</span>
-              <span class="card-icon">🎯</span>
-            </div>
+          <div class="card-header">
+            <div class="card-step">TIPS 2</div>
             <h3>指示は具体的に書く</h3>
-            <p>「まとめて」より「3点に絞って箇条書きで要約して」のように、出力形式・量・観点を明示すると精度が上がります。</p>
+            <span class="card-watermark">2</span>
           </div>
-          <div class="card-footer">
-            <span class="date">2026/07/02</span>
-            <span class="more">詳細を見る →</span>
+          <div class="card-body">
+            <span class="card-btn">→ 詳細を見る</span>
           </div>
         </div>
 
         <div class="card card-3" onclick="openModal('modal3')">
-          <div>
-            <div class="card-top">
-              <span class="tag tag-prompt">プロンプト</span>
-              <span class="card-icon">🎭</span>
-            </div>
+          <div class="card-header">
+            <div class="card-step">TIPS 3</div>
             <h3>役割を与える</h3>
-            <p>「あなたはベテランの営業担当です」のように役割を設定すると、文体や視点が変わり、より実用的な回答が得られます。</p>
+            <span class="card-watermark">3</span>
           </div>
-          <div class="card-footer">
-            <span class="date">2026/07/02</span>
-            <span class="more">詳細を見る →</span>
+          <div class="card-body">
+            <span class="card-btn">→ 詳細を見る</span>
           </div>
         </div>
 
         <div class="card card-4" onclick="openModal('modal4')">
-          <div>
-            <div class="card-top">
-              <span class="tag tag-tips">活用術</span>
-              <span class="card-icon">🚀</span>
-            </div>
+          <div class="card-header">
+            <div class="card-step">TIPS 4</div>
             <h3>叩き台作成に使う</h3>
-            <p>メール・議事録・企画書の初稿をAIに作らせてから人が修正する流れにすると、作業時間を大幅に短縮できます。</p>
+            <span class="card-watermark">4</span>
           </div>
-          <div class="card-footer">
-            <span class="date">2026/07/02</span>
-            <span class="more">詳細を見る →</span>
+          <div class="card-body">
+            <span class="card-btn">→ 詳細を見る</span>
           </div>
         </div>
 
         <div class="card card-5" onclick="openModal('modal5')">
-          <div>
-            <div class="card-top">
-              <span class="tag tag-warn">注意点</span>
-              <span class="card-icon">🔒</span>
-            </div>
+          <div class="card-header">
+            <div class="card-step">TIPS 5</div>
             <h3>社外秘情報は入力しない</h3>
-            <p>顧客情報・契約内容・個人情報などの社外秘データは外部AIツールに入力しないよう注意してください。</p>
+            <span class="card-watermark">5</span>
           </div>
-          <div class="card-footer">
-            <span class="date">2026/07/02</span>
-            <span class="more">詳細を見る →</span>
+          <div class="card-body">
+            <span class="card-btn">→ 詳細を見る</span>
           </div>
         </div>
 
