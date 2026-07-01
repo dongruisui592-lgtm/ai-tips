@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI活用情報ポータル</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
+
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 24px 32px;
+    }
+
+    header h1 { font-size: 24px; font-weight: bold; }
+    header p { font-size: 14px; color: #aab; margin-top: 4px; }
+
+    main { max-width: 960px; margin: 0 auto; padding: 32px 16px; }
+
+    /* お知らせ */
+    .notice {
+      background: #fff8e1;
+      border-left: 4px solid #f59e0b;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin-bottom: 40px;
+    }
+
+    .notice h2 { font-size: 15px; color: #92400e; margin-bottom: 10px; }
+
+    .notice ul { list-style: none; }
+
+    .notice ul li {
+      font-size: 14px;
+      padding: 4px 0;
+      border-bottom: 1px solid #fde68a;
+    }
+
+    .notice ul li:last-child { border-bottom: none; }
+
+    .notice ul li span {
+      color: #b45309;
+      font-size: 12px;
+      margin-right: 10px;
+    }
+
+    /* Tips */
+    .section-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #2c3e50;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+    }
+
+    .card:hover { transform: translateY(-3px); }
+
+    .card .tag {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    .card h3 { font-size: 16px; margin-bottom: 8px; }
+
+    .card p { font-size: 14px; color: #555; line-height: 1.6; }
+
+    .card .date { font-size: 12px; color: #999; margin-top: 12px; }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+      color: #999;
+      margin-top: 60px;
+      border-top: 1px solid #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>AI活用情報ポータル</h1>
+    <p>社内向け AI ツール活用ナレッジベース</p>
+  </header>
+
+  <main>
+
+    <!-- お知らせ -->
+    <section class="notice">
+      <h2>📢 お知らせ</h2>
+      <ul>
+        <li><span>2026/07/02</span>ポータルサイトを開設しました</li>
+        <li><span>2026/07/02</span>ChatAIの社内利用ガイドラインを公開しました</li>
+      </ul>
+    </section>
+
+    <!-- AI活用Tips -->
+    <section>
+      <h2 class="section-title">AI活用 Tips</h2>
+      <div class="cards">
+
+        <div class="card">
+          <span class="tag">プロンプト</span>
+          <h3>指示は具体的に書く</h3>
+          <p>「まとめて」より「3点に絞って箇条書きで要約して」のように、出力形式・量・観点を明示すると精度が上がります。</p>
+          <div class="date">2026/07/02</div>
+        </div>
+
+        <div class="card">
+          <span class="tag">プロンプト</span>
+          <h3>役割を与える</h3>
+          <p>「あなたはベテランの営業担当です」のように役割を設定すると、文体や視点が変わり、より実用的な回答が得られます。</p>
+          <div class="date">2026/07/02</div>
+        </div>
+
+        <div class="card">
+          <span class="tag">活用術</span>
+          <h3>叩き台作成に使う</h3>
+          <p>メール・議事録・企画書の初稿をAIに作らせてから人が修正する流れにすると、作業時間を大幅に短縮できます。</p>
+          <div class="date">2026/07/02</div>
+        </div>
+
+        <div class="card">
+          <span class="tag">注意点</span>
+          <h3>社外秘情報は入力しない</h3>
+          <p>顧客情報・契約内容・個人情報などの社外秘データは外部AIツールに入力しないよう注意してください。</p>
+          <div class="date">2026/07/02</div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    &copy; 2026 AI活用情報ポータル｜社内限定
+  </footer>
+
+</body>
+</html>
