@@ -4,272 +4,581 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI活用情報ポータル</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
-      background: #f0f7f0;
-      color: #2d4a2d;
+      font-family: 'Noto Sans JP', sans-serif;
+      background: #f0f9ff;
+      color: #1a2a4a;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* 固定背景 */
+    .bg-fixed {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
     }
 
     /* ヘッダー */
     header {
-      background: linear-gradient(135deg, #1a4a1a 0%, #2d7a2d 50%, #3a9a3a 100%);
-      color: white;
-      padding: 0;
-      position: relative;
-      overflow: hidden;
-    }
-
-    header::before {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 60px;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0,40 Q100,10 200,35 Q300,55 400,25 Q500,5 600,30 Q700,50 800,20 Q900,0 1000,30 Q1100,55 1200,35 L1200,60 L0,60 Z' fill='%23f0f7f0'/%3E%3C/svg%3E") no-repeat bottom;
-      background-size: cover;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 3px solid #60a5fa;
+      padding: 0 32px;
     }
 
     .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
-      gap: 24px;
-      padding: 28px 40px 60px;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-logo img { width: 38px; height: 38px; object-fit: contain; }
+
+    .header-logo span {
+      font-size: 17px;
+      font-weight: 900;
+      background: linear-gradient(90deg, #2563eb, #0ea5e9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-badge {
+      font-size: 11px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #3b82f6, #0ea5e9);
+      color: white;
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+
+    /* ヒーロー */
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 45%, #0ea5e9 100%);
+      padding: 64px 40px 72px;
+      text-align: center;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .hero-bg { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-mascot {
+      width: 90px;
+      margin-bottom: 18px;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    }
+
+    .hero h1 span { color: #7dd3fc; }
+    .hero p { font-size: 15px; color: #bfdbfe; max-width: 460px; margin: 0 auto; line-height: 1.8; }
+
+    .wave { background: linear-gradient(135deg,#1e3a8a,#2563eb 45%,#0ea5e9); line-height:0; position:relative; z-index:1; }
+    .wave svg { display:block; }
+
+    /* メイン */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 32px 80px;
       position: relative;
       z-index: 1;
     }
 
-    .header-mascot {
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-      animation: bounce 2s ease-in-out infinite;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-
-    .header-text h1 {
-      font-size: 26px;
-      font-weight: bold;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .header-text p {
-      font-size: 14px;
-      color: #b8e6b8;
-      margin-top: 4px;
-    }
-
-    /* 木のデコレーション */
-    .forest-deco {
-      background: #f0f7f0;
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      padding: 8px 0 0;
-      font-size: 28px;
-    }
-
-    main { max-width: 960px; margin: 0 auto; padding: 32px 16px; }
-
     /* お知らせ */
     .notice {
-      background: white;
-      border-left: 5px solid #3a9a3a;
-      border-radius: 10px;
-      padding: 16px 20px;
-      margin-bottom: 40px;
-      box-shadow: 0 2px 12px rgba(45,122,45,0.1);
+      background: rgba(255,255,255,0.95);
+      border: 2px solid #60a5fa;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 52px;
+      box-shadow: 0 6px 24px rgba(59,130,246,0.12), 4px 4px 0 #bfdbfe;
     }
 
-    .notice h2 { font-size: 15px; color: #1a5a1a; margin-bottom: 10px; }
+    .notice h2 { font-size: 13px; font-weight: 700; color: #2563eb; letter-spacing: 0.08em; margin-bottom: 14px; }
 
     .notice ul { list-style: none; }
 
     .notice ul li {
       font-size: 14px;
-      padding: 5px 0;
-      border-bottom: 1px solid #d4ead4;
-      color: #2d4a2d;
+      padding: 8px 0;
+      border-bottom: 1px dashed #bfdbfe;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .notice ul li:last-child { border-bottom: none; }
 
     .notice ul li span {
-      color: #3a9a3a;
-      font-size: 12px;
-      margin-right: 10px;
-      font-weight: bold;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+      background: linear-gradient(90deg,#3b82f6,#0ea5e9);
+      padding: 2px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
     }
 
-    /* Tips */
-    .section-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 3px solid #3a9a3a;
-      color: #1a4a1a;
+    /* セクション */
+    .section-header {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
+      margin-bottom: 28px;
     }
 
+    .section-title {
+      font-size: 22px;
+      font-weight: 900;
+      background: linear-gradient(90deg,#2563eb,#0ea5e9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-count {
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+      background: linear-gradient(90deg,#3b82f6,#0ea5e9);
+      padding: 3px 12px;
+      border-radius: 20px;
+    }
+
+    /* カード：正方形・3列 */
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
     }
 
     .card {
       background: white;
-      border-radius: 14px;
-      padding: 20px;
-      box-shadow: 0 3px 12px rgba(45,122,45,0.12);
-      transition: transform 0.2s, box-shadow 0.2s;
+      border-radius: 20px;
+      padding: 24px;
       cursor: pointer;
-      border-top: 4px solid #3a9a3a;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #e0f0ff;
+      /* 正方形 */
+      aspect-ratio: 1 / 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
+
+    /* カードごとの上部アクセントカラー */
+    .card-1 { border-top: 5px solid #3b82f6; }
+    .card-2 { border-top: 5px solid #8b5cf6; }
+    .card-3 { border-top: 5px solid #06b6d4; }
+    .card-4 { border-top: 5px solid #10b981; }
+    .card-5 { border-top: 5px solid #f59e0b; }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      bottom: -30px; right: -30px;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      opacity: 0.06;
+      transition: opacity 0.25s;
+    }
+    .card-1::before { background: #3b82f6; }
+    .card-2::before { background: #8b5cf6; }
+    .card-3::before { background: #06b6d4; }
+    .card-4::before { background: #10b981; }
+    .card-5::before { background: #f59e0b; }
 
     .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(45,122,45,0.2);
+      transform: translateY(-6px) rotate(-1deg);
+      box-shadow: 0 16px 40px rgba(59,130,246,0.18);
+      border-color: #93c5fd;
     }
 
-    .card .tag {
-      display: inline-block;
+    .card:hover::before { opacity: 0.12; }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .tag {
       font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      margin-bottom: 10px;
-      font-weight: bold;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      letter-spacing: 0.04em;
     }
 
-    .tag-prompt { background: #d4ead4; color: #1a5a1a; }
-    .tag-tips { background: #c8e6c8; color: #155a15; }
-    .tag-warn { background: #fde8e8; color: #9a2a2a; }
+    .tag-prompt { background: #ede9fe; color: #7c3aed; }
+    .tag-tips   { background: #d1fae5; color: #059669; }
+    .tag-warn   { background: #fef3c7; color: #d97706; }
 
-    .card h3 { font-size: 16px; margin-bottom: 8px; color: #1a4a1a; }
+    .card-icon { font-size: 28px; line-height: 1; }
 
-    .card p { font-size: 14px; color: #4a6a4a; line-height: 1.6; }
+    .card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a2a4a;
+      line-height: 1.4;
+      margin: 12px 0 8px;
+    }
 
-    .card .date { font-size: 12px; color: #8aaa8a; margin-top: 12px; }
+    .card p { font-size: 12px; color: #64748b; line-height: 1.7; flex: 1; }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+    }
+
+    .card .date { font-size: 11px; color: #94a3b8; }
 
     .card .more {
-      font-size: 13px;
-      color: #3a9a3a;
-      margin-top: 10px;
-      font-weight: bold;
+      font-size: 12px;
+      font-weight: 700;
+      color: #3b82f6;
+      background: #eff6ff;
+      padding: 4px 10px;
+      border-radius: 8px;
+      transition: background 0.2s;
     }
 
+    .card:hover .more { background: #dbeafe; }
+
+    /* フッター */
     footer {
+      background: linear-gradient(135deg,#1e3a8a,#1d4ed8);
+      padding: 28px 40px;
       text-align: center;
-      padding: 32px;
-      font-size: 13px;
-      color: #6a8a6a;
-      margin-top: 60px;
-      border-top: 2px solid #c8e6c8;
-      background: white;
+      position: relative;
+      z-index: 1;
     }
 
-    .footer-mascot {
-      width: 48px;
-      vertical-align: middle;
-      margin-right: 8px;
-    }
+    .footer-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:center; gap:10px; }
+    footer img { width:32px; object-fit:contain; opacity:0.85; }
+    footer p { font-size:12px; color:#93c5fd; }
 
     /* モーダル */
     .modal-overlay {
       display: none;
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(20,50,20,0.6);
+      top:0; left:0;
+      width:100%; height:100%;
+      background: rgba(15,30,80,0.65);
       z-index: 1000;
       justify-content: center;
       align-items: center;
+      backdrop-filter: blur(4px);
     }
 
     .modal-overlay.active { display: flex; }
 
     .modal {
       background: white;
-      border-radius: 16px;
-      padding: 32px;
-      max-width: 600px;
+      border-radius: 20px;
+      padding: 36px;
+      max-width: 620px;
       width: 90%;
       max-height: 80vh;
       overflow-y: auto;
       position: relative;
-      border-top: 6px solid #3a9a3a;
+      border-top: 5px solid #3b82f6;
+      box-shadow: 0 24px 64px rgba(30,58,138,0.25);
     }
-
-    .modal .tag {
-      display: inline-block;
-      font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      margin-bottom: 12px;
-      font-weight: bold;
-    }
-
-    .modal h2 { font-size: 20px; margin-bottom: 16px; color: #1a4a1a; }
-
-    .modal .detail { font-size: 15px; color: #3a5a3a; line-height: 1.8; }
-
-    .modal .detail h4 {
-      margin: 16px 0 8px;
-      color: #1a5a1a;
-      font-size: 15px;
-      border-left: 3px solid #3a9a3a;
-      padding-left: 8px;
-    }
-
-    .modal .detail ul { padding-left: 20px; }
-
-    .modal .detail li { margin-bottom: 6px; }
-
-    .modal .detail-image {
-      width: 100%;
-      border-radius: 8px;
-      margin: 12px 0;
-      border: 1px solid #c8e6c8;
-    }
-
-    .modal .date { font-size: 12px; color: #8aaa8a; margin-top: 20px; }
 
     .modal-close {
       position: absolute;
-      top: 16px; right: 20px;
-      font-size: 24px;
+      top: 18px; right: 20px;
+      font-size: 20px;
       cursor: pointer;
-      color: #8aaa8a;
+      color: #94a3b8;
       background: none;
       border: none;
+      transition: color 0.2s;
     }
 
-    .modal-close:hover { color: #1a4a1a; }
+    .modal-close:hover { color: #1a2a4a; }
+
+    .modal h2 { font-size: 22px; font-weight: 700; color: #1a2a4a; margin: 12px 0 20px; line-height: 1.4; }
+
+    .modal .detail { font-size: 14px; color: #475569; line-height: 1.8; }
+    .modal .detail p { margin-bottom: 12px; }
+
+    .modal .detail h4 {
+      font-size: 12px;
+      font-weight: 700;
+      color: #3b82f6;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 20px 0 10px;
+      padding-left: 10px;
+      border-left: 3px solid #3b82f6;
+    }
+
+    .modal .detail ul { padding-left: 18px; color: #334155; }
+    .modal .detail li { margin-bottom: 8px; }
+    .modal .detail-image { width:100%; border-radius:10px; margin:16px 0; border:1px solid #dce8ff; }
+    .modal .date { font-size:11px; color:#94a3b8; margin-top:24px; padding-top:16px; border-top:1px solid #f0f6ff; }
   </style>
 </head>
 <body>
 
+  <!-- 固定背景：ポップなキャラクターたち -->
+  <svg class="bg-fixed" viewBox="0 0 1440 960" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="bgR" cx="50%" cy="40%" r="70%">
+        <stop offset="0%" style="stop-color:#e0f2fe"/>
+        <stop offset="100%" style="stop-color:#dbeafe"/>
+      </radialGradient>
+    </defs>
+    <rect width="1440" height="960" fill="url(#bgR)"/>
+
+    <!-- ===== 左上エリア：猫キャラ ===== -->
+    <g transform="translate(30,120)" opacity="0.28">
+      <!-- 体 -->
+      <ellipse cx="55" cy="110" rx="42" ry="48" fill="#f9a8d4"/>
+      <!-- 頭 -->
+      <circle cx="55" cy="58" r="36" fill="#f9a8d4"/>
+      <!-- 耳 -->
+      <polygon points="28,36 18,8 44,28" fill="#f9a8d4"/>
+      <polygon points="82,36 92,8 66,28" fill="#f9a8d4"/>
+      <polygon points="30,34 22,14 42,28" fill="#fda4af"/>
+      <polygon points="80,34 88,14 68,28" fill="#fda4af"/>
+      <!-- 顔 -->
+      <circle cx="44" cy="54" r="7" fill="white"/>
+      <circle cx="66" cy="54" r="7" fill="white"/>
+      <circle cx="46" cy="56" r="4" fill="#1e3a8a"/>
+      <circle cx="68" cy="56" r="4" fill="#1e3a8a"/>
+      <ellipse cx="55" cy="70" rx="5" ry="4" fill="#fda4af"/>
+      <!-- ひげ -->
+      <line x1="20" y1="68" x2="46" y2="72" stroke="#be185d" stroke-width="1.5"/>
+      <line x1="20" y1="74" x2="46" y2="74" stroke="#be185d" stroke-width="1.5"/>
+      <line x1="64" y1="72" x2="90" y2="68" stroke="#be185d" stroke-width="1.5"/>
+      <line x1="64" y1="74" x2="90" y2="74" stroke="#be185d" stroke-width="1.5"/>
+      <!-- 腕 -->
+      <ellipse cx="16" cy="108" rx="12" ry="20" rx="12" fill="#f9a8d4" transform="rotate(-15,16,108)"/>
+      <ellipse cx="94" cy="108" rx="12" ry="20" fill="#f9a8d4" transform="rotate(15,94,108)"/>
+      <!-- 足 -->
+      <ellipse cx="36" cy="154" rx="18" ry="12" fill="#f9a8d4"/>
+      <ellipse cx="74" cy="154" rx="18" ry="12" fill="#f9a8d4"/>
+      <!-- しっぽ -->
+      <path d="M 90 130 Q 130 100 120 150 Q 110 180 90 160" stroke="#f9a8d4" stroke-width="10" fill="none" stroke-linecap="round"/>
+    </g>
+
+    <!-- ===== 左下エリア：歩く人 ===== -->
+    <g transform="translate(20,680)" opacity="0.22">
+      <circle cx="38" cy="22" r="20" fill="#60a5fa"/>
+      <!-- 顔パーツ -->
+      <circle cx="31" cy="20" r="3" fill="#1e3a8a"/>
+      <circle cx="45" cy="20" r="3" fill="#1e3a8a"/>
+      <path d="M 31 28 Q 38 34 45 28" stroke="#1e3a8a" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <!-- 体 -->
+      <rect x="22" y="42" width="32" height="44" rx="10" fill="#3b82f6"/>
+      <!-- 腕 -->
+      <line x1="22" y1="54" x2="4" y2="76" stroke="#60a5fa" stroke-width="10" stroke-linecap="round"/>
+      <line x1="54" y1="54" x2="70" y2="72" stroke="#60a5fa" stroke-width="10" stroke-linecap="round"/>
+      <!-- 足 -->
+      <line x1="30" y1="86" x2="18" y2="118" stroke="#2563eb" stroke-width="10" stroke-linecap="round"/>
+      <line x1="46" y1="86" x2="58" y2="118" stroke="#2563eb" stroke-width="10" stroke-linecap="round"/>
+    </g>
+
+    <!-- ===== 右上エリア：うさぎ ===== -->
+    <g transform="translate(1300,80)" opacity="0.26">
+      <!-- 耳 -->
+      <ellipse cx="28" cy="30" rx="10" ry="36" fill="#a5f3fc"/>
+      <ellipse cx="58" cy="30" rx="10" ry="36" fill="#a5f3fc"/>
+      <ellipse cx="28" cy="30" rx="6" ry="28" fill="#f9a8d4"/>
+      <ellipse cx="58" cy="30" rx="6" ry="28" fill="#f9a8d4"/>
+      <!-- 頭 -->
+      <circle cx="43" cy="72" r="34" fill="#e0f2fe"/>
+      <!-- 顔 -->
+      <circle cx="33" cy="68" r="6" fill="white"/>
+      <circle cx="53" cy="68" r="6" fill="white"/>
+      <circle cx="35" cy="70" r="4" fill="#0284c7"/>
+      <circle cx="55" cy="70" r="4" fill="#0284c7"/>
+      <ellipse cx="43" cy="82" rx="5" ry="3" fill="#f9a8d4"/>
+      <path d="M 33 88 Q 43 95 53 88" stroke="#0284c7" stroke-width="2" fill="none"/>
+      <!-- 体 -->
+      <ellipse cx="43" cy="136" rx="36" ry="44" fill="#e0f2fe"/>
+      <!-- 腕 -->
+      <ellipse cx="8" cy="126" rx="10" ry="22" fill="#e0f2fe" transform="rotate(-20,8,126)"/>
+      <ellipse cx="78" cy="126" rx="10" ry="22" fill="#e0f2fe" transform="rotate(20,78,126)"/>
+      <!-- 足 -->
+      <ellipse cx="28" cy="176" rx="18" ry="10" fill="#e0f2fe"/>
+      <ellipse cx="58" cy="176" rx="18" ry="10" fill="#e0f2fe"/>
+    </g>
+
+    <!-- ===== 右下エリア：女の子キャラ ===== -->
+    <g transform="translate(1310,700)" opacity="0.22">
+      <!-- 頭 -->
+      <circle cx="42" cy="26" r="24" fill="#fde68a"/>
+      <!-- 髪 -->
+      <path d="M 18 20 Q 8 0 26 4 Q 20 14 22 22" fill="#92400e"/>
+      <path d="M 66 20 Q 76 0 58 4 Q 64 14 62 22" fill="#92400e"/>
+      <ellipse cx="42" cy="10" rx="22" ry="10" fill="#92400e"/>
+      <!-- 顔 -->
+      <circle cx="34" cy="24" r="4" fill="#1e3a8a"/>
+      <circle cx="50" cy="24" r="4" fill="#1e3a8a"/>
+      <ellipse cx="30" cy="30" rx="4" ry="2" fill="#fca5a5" opacity="0.8"/>
+      <ellipse cx="54" cy="30" rx="4" ry="2" fill="#fca5a5" opacity="0.8"/>
+      <path d="M 34 36 Q 42 42 50 36" stroke="#92400e" stroke-width="2" fill="none"/>
+      <!-- 体（ワンピース） -->
+      <path d="M 18 50 Q 12 90 16 110 Q 42 120 68 110 Q 72 90 66 50 Q 54 60 42 60 Q 30 60 18 50Z" fill="#818cf8"/>
+      <!-- 腕 -->
+      <line x1="18" y1="60" x2="4" y2="88" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
+      <line x1="66" y1="60" x2="80" y2="88" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
+      <!-- 足 -->
+      <line x1="30" y1="110" x2="22" y2="140" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
+      <line x1="54" y1="110" x2="62" y2="140" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
+    </g>
+
+    <!-- ===== 中央右エリア：犬キャラ ===== -->
+    <g transform="translate(1180,420)" opacity="0.2">
+      <!-- 体 -->
+      <ellipse cx="50" cy="100" rx="40" ry="44" fill="#fcd34d"/>
+      <!-- 頭 -->
+      <circle cx="50" cy="52" r="36" fill="#fcd34d"/>
+      <!-- 耳 -->
+      <ellipse cx="20" cy="44" rx="14" ry="22" fill="#f59e0b" transform="rotate(-20,20,44)"/>
+      <ellipse cx="80" cy="44" rx="14" ry="22" fill="#f59e0b" transform="rotate(20,80,44)"/>
+      <!-- 顔 -->
+      <ellipse cx="50" cy="60" rx="22" ry="16" fill="#f59e0b"/>
+      <circle cx="38" cy="46" r="6" fill="white"/>
+      <circle cx="62" cy="46" r="6" fill="white"/>
+      <circle cx="40" cy="48" r="4" fill="#1e3a8a"/>
+      <circle cx="64" cy="48" r="4" fill="#1e3a8a"/>
+      <ellipse cx="50" cy="62" rx="8" ry="6" fill="#1e3a8a"/>
+      <!-- 尾 -->
+      <path d="M 88 90 Q 120 60 115 100" stroke="#fcd34d" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <!-- 足 -->
+      <ellipse cx="28" cy="140" rx="18" ry="10" fill="#fcd34d"/>
+      <ellipse cx="72" cy="140" rx="18" ry="10" fill="#fcd34d"/>
+    </g>
+
+    <!-- ===== 中央左エリア：男の子キャラ ===== -->
+    <g transform="translate(80,420)" opacity="0.2">
+      <circle cx="42" cy="26" r="24" fill="#fde68a"/>
+      <path d="M 18 18 Q 20 0 42 2 Q 64 0 66 18" fill="#1e3a8a"/>
+      <circle cx="33" cy="24" r="4" fill="#1e3a8a"/>
+      <circle cx="51" cy="24" r="4" fill="#1e3a8a"/>
+      <ellipse cx="30" cy="30" rx="4" ry="2" fill="#fca5a5" opacity="0.7"/>
+      <ellipse cx="54" cy="30" rx="4" ry="2" fill="#fca5a5" opacity="0.7"/>
+      <path d="M 34 36 Q 42 42 50 36" stroke="#92400e" stroke-width="2" fill="none"/>
+      <rect x="20" y="50" width="44" height="54" rx="10" fill="#34d399"/>
+      <line x1="20" y1="62" x2="4" y2="90" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
+      <line x1="64" y1="62" x2="80" y2="90" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
+      <line x1="30" y1="104" x2="22" y2="134" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
+      <line x1="54" y1="104" x2="62" y2="134" stroke="#fde68a" stroke-width="9" stroke-linecap="round"/>
+    </g>
+
+    <!-- カラフルな星・泡 -->
+    <g opacity="0.35">
+      <polygon points="220,90 224,104 238,104 228,113 231,127 220,119 209,127 212,113 202,104 216,104" fill="#fbbf24"/>
+      <polygon points="1050,180 1053,190 1063,190 1056,196 1058,206 1050,200 1042,206 1044,196 1037,190 1047,190" fill="#34d399"/>
+      <polygon points="680,820 683,830 693,830 686,836 688,846 680,840 672,846 674,836 667,830 677,830" fill="#f472b6"/>
+      <polygon points="160,700 163,710 173,710 166,716 168,726 160,720 152,726 154,716 147,710 157,710" fill="#a78bfa"/>
+      <polygon points="800,100 803,110 813,110 806,116 808,126 800,120 792,126 794,116 787,110 797,110" fill="#60a5fa"/>
+      <polygon points="1250,600 1253,608 1261,608 1255,613 1257,621 1250,616 1243,621 1245,613 1239,608 1247,608" fill="#fb923c"/>
+    </g>
+
+    <!-- カラフルな円バブル -->
+    <circle cx="350" cy="200" r="60" fill="rgba(167,243,208,0.2)"/>
+    <circle cx="1050" cy="700" r="80" fill="rgba(196,181,253,0.18)"/>
+    <circle cx="700" cy="500" r="50" fill="rgba(253,186,116,0.15)"/>
+    <circle cx="150" cy="300" r="40" fill="rgba(125,211,252,0.2)"/>
+    <circle cx="1350" cy="350" r="45" fill="rgba(252,165,165,0.18)"/>
+
+    <!-- AIネットワーク線 -->
+    <g opacity="0.1">
+      <line x1="300" y1="200" x2="600" y2="350" stroke="#3b82f6" stroke-width="2"/>
+      <line x1="600" y1="350" x2="900" y2="250" stroke="#3b82f6" stroke-width="2"/>
+      <line x1="900" y1="250" x2="1200" y2="400" stroke="#3b82f6" stroke-width="2"/>
+      <line x1="600" y1="350" x2="700" y2="600" stroke="#3b82f6" stroke-width="2"/>
+      <line x1="900" y1="250" x2="700" y2="600" stroke="#3b82f6" stroke-width="2"/>
+      <circle cx="300" cy="200" r="8" fill="#3b82f6" opacity="0.5"/>
+      <circle cx="600" cy="350" r="8" fill="#3b82f6" opacity="0.5"/>
+      <circle cx="900" cy="250" r="8" fill="#3b82f6" opacity="0.5"/>
+      <circle cx="1200" cy="400" r="8" fill="#3b82f6" opacity="0.5"/>
+      <circle cx="700" cy="600" r="8" fill="#3b82f6" opacity="0.5"/>
+    </g>
+  </svg>
+
+  <!-- ヘッダー -->
   <header>
     <div class="header-inner">
-      <img src="mascot.png" alt="マスコット" class="header-mascot">
-      <div class="header-text">
-        <h1>AI活用情報ポータル</h1>
-        <p>社内向け AI ツール活用ナレッジベース</p>
+      <div class="header-logo">
+        <img src="mascot.png" alt="マスコット">
+        <span>AI活用情報ポータル</span>
       </div>
+      <span class="header-badge">社内限定</span>
     </div>
   </header>
 
-  <main>
+  <!-- ヒーロー -->
+  <section class="hero">
+    <svg class="hero-bg" viewBox="0 0 1200 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse">
+          <circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.08)"/>
+        </pattern>
+      </defs>
+      <rect width="1200" height="280" fill="url(#dots)"/>
+      <circle cx="150" cy="60" r="80" fill="rgba(255,255,255,0.04)"/>
+      <circle cx="1050" cy="80" r="100" fill="rgba(255,255,255,0.04)"/>
+      <circle cx="600" cy="240" r="60" fill="rgba(255,255,255,0.03)"/>
+    </svg>
+    <div class="hero-content">
+      <img src="mascot.png" alt="マスコット" class="hero-mascot">
+      <h1>社内 <span>AI活用</span> ナレッジベース</h1>
+      <p>AIツールを業務で活かすためのTipsや使い方情報を集約しています。</p>
+    </div>
+  </section>
 
+  <div class="wave">
+    <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,30 Q300,60 600,30 Q900,0 1200,30 L1200,60 L0,60 Z" fill="#f0f9ff"/>
+    </svg>
+  </div>
+
+  <main>
     <!-- お知らせ -->
     <section class="notice">
       <h2>📢 お知らせ</h2>
@@ -280,63 +589,102 @@
       </ul>
     </section>
 
-    <!-- AI活用Tips -->
+    <!-- Tips -->
     <section>
-      <h2 class="section-title">🌿 AI活用 Tips</h2>
+      <div class="section-header">
+        <h2 class="section-title">✨ AI活用 Tips</h2>
+        <span class="section-count">5 記事</span>
+      </div>
       <div class="cards">
 
-        <div class="card" onclick="openModal('modal1')">
-          <span class="tag tag-tips">活用術</span>
-          <h3>ChatGPTで議事録を自動作成する</h3>
-          <p>会議の録音や走り書きメモをそのまま貼り付けるだけで、整形された議事録が完成します。</p>
-          <div class="date">2026/07/02</div>
-          <div class="more">詳細を見る →</div>
+        <div class="card card-1" onclick="openModal('modal1')">
+          <div>
+            <div class="card-top">
+              <span class="tag tag-tips">活用術</span>
+              <span class="card-icon">📝</span>
+            </div>
+            <h3>ChatGPTで議事録を自動作成する</h3>
+            <p>会議の録音や走り書きメモをそのまま貼り付けるだけで、整形された議事録が完成します。</p>
+          </div>
+          <div class="card-footer">
+            <span class="date">2026/07/02</span>
+            <span class="more">詳細を見る →</span>
+          </div>
         </div>
 
-        <div class="card" onclick="openModal('modal2')">
-          <span class="tag tag-prompt">プロンプト</span>
-          <h3>指示は具体的に書く</h3>
-          <p>「まとめて」より「3点に絞って箇条書きで要約して」のように、出力形式・量・観点を明示すると精度が上がります。</p>
-          <div class="date">2026/07/02</div>
-          <div class="more">詳細を見る →</div>
+        <div class="card card-2" onclick="openModal('modal2')">
+          <div>
+            <div class="card-top">
+              <span class="tag tag-prompt">プロンプト</span>
+              <span class="card-icon">🎯</span>
+            </div>
+            <h3>指示は具体的に書く</h3>
+            <p>「まとめて」より「3点に絞って箇条書きで要約して」のように、出力形式・量・観点を明示すると精度が上がります。</p>
+          </div>
+          <div class="card-footer">
+            <span class="date">2026/07/02</span>
+            <span class="more">詳細を見る →</span>
+          </div>
         </div>
 
-        <div class="card" onclick="openModal('modal3')">
-          <span class="tag tag-prompt">プロンプト</span>
-          <h3>役割を与える</h3>
-          <p>「あなたはベテランの営業担当です」のように役割を設定すると、文体や視点が変わり、より実用的な回答が得られます。</p>
-          <div class="date">2026/07/02</div>
-          <div class="more">詳細を見る →</div>
+        <div class="card card-3" onclick="openModal('modal3')">
+          <div>
+            <div class="card-top">
+              <span class="tag tag-prompt">プロンプト</span>
+              <span class="card-icon">🎭</span>
+            </div>
+            <h3>役割を与える</h3>
+            <p>「あなたはベテランの営業担当です」のように役割を設定すると、文体や視点が変わり、より実用的な回答が得られます。</p>
+          </div>
+          <div class="card-footer">
+            <span class="date">2026/07/02</span>
+            <span class="more">詳細を見る →</span>
+          </div>
         </div>
 
-        <div class="card" onclick="openModal('modal4')">
-          <span class="tag tag-tips">活用術</span>
-          <h3>叩き台作成に使う</h3>
-          <p>メール・議事録・企画書の初稿をAIに作らせてから人が修正する流れにすると、作業時間を大幅に短縮できます。</p>
-          <div class="date">2026/07/02</div>
-          <div class="more">詳細を見る →</div>
+        <div class="card card-4" onclick="openModal('modal4')">
+          <div>
+            <div class="card-top">
+              <span class="tag tag-tips">活用術</span>
+              <span class="card-icon">🚀</span>
+            </div>
+            <h3>叩き台作成に使う</h3>
+            <p>メール・議事録・企画書の初稿をAIに作らせてから人が修正する流れにすると、作業時間を大幅に短縮できます。</p>
+          </div>
+          <div class="card-footer">
+            <span class="date">2026/07/02</span>
+            <span class="more">詳細を見る →</span>
+          </div>
         </div>
 
-        <div class="card" onclick="openModal('modal5')">
-          <span class="tag tag-warn">注意点</span>
-          <h3>社外秘情報は入力しない</h3>
-          <p>顧客情報・契約内容・個人情報などの社外秘データは外部AIツールに入力しないよう注意してください。</p>
-          <div class="date">2026/07/02</div>
-          <div class="more">詳細を見る →</div>
+        <div class="card card-5" onclick="openModal('modal5')">
+          <div>
+            <div class="card-top">
+              <span class="tag tag-warn">注意点</span>
+              <span class="card-icon">🔒</span>
+            </div>
+            <h3>社外秘情報は入力しない</h3>
+            <p>顧客情報・契約内容・個人情報などの社外秘データは外部AIツールに入力しないよう注意してください。</p>
+          </div>
+          <div class="card-footer">
+            <span class="date">2026/07/02</span>
+            <span class="more">詳細を見る →</span>
+          </div>
         </div>
 
       </div>
     </section>
-
   </main>
 
   <footer>
-    <img src="mascot.png" alt="マスコット" class="footer-mascot">
-    &copy; 2026 AI活用情報ポータル｜社内限定
+    <div class="footer-inner">
+      <img src="mascot.png" alt="マスコット">
+      <p>&copy; 2026 AI活用情報ポータル｜社内限定</p>
+    </div>
   </footer>
 
-  <!-- モーダル1：議事録 -->
-  <div class="modal-overlay" id="modal1" onclick="closeModal(event, 'modal1')">
+  <!-- モーダル1 -->
+  <div class="modal-overlay" id="modal1" onclick="closeModal(event,'modal1')">
     <div class="modal">
       <button class="modal-close" onclick="document.getElementById('modal1').classList.remove('active')">✕</button>
       <span class="tag tag-tips">活用術</span>
@@ -362,8 +710,8 @@
     </div>
   </div>
 
-  <!-- モーダル2：具体的な指示 -->
-  <div class="modal-overlay" id="modal2" onclick="closeModal(event, 'modal2')">
+  <!-- モーダル2 -->
+  <div class="modal-overlay" id="modal2" onclick="closeModal(event,'modal2')">
     <div class="modal">
       <button class="modal-close" onclick="document.getElementById('modal2').classList.remove('active')">✕</button>
       <span class="tag tag-prompt">プロンプト</span>
@@ -374,7 +722,7 @@
         <ul>
           <li>「まとめて」→「3点に絞って箇条書きで要約して」</li>
           <li>「メールを書いて」→「取引先への納期遅延を詫びるメールを、丁寧な敬語で200字以内で書いて」</li>
-          <li>「改善して」→「文章を読みやすくするために、一文を短くして接続詞を整えてください」</li>
+          <li>「改善して」→「一文を短くして接続詞を整えてください」</li>
         </ul>
         <h4>指定できる要素</h4>
         <ul>
@@ -388,8 +736,8 @@
     </div>
   </div>
 
-  <!-- モーダル3：役割 -->
-  <div class="modal-overlay" id="modal3" onclick="closeModal(event, 'modal3')">
+  <!-- モーダル3 -->
+  <div class="modal-overlay" id="modal3" onclick="closeModal(event,'modal3')">
     <div class="modal">
       <button class="modal-close" onclick="document.getElementById('modal3').classList.remove('active')">✕</button>
       <span class="tag tag-prompt">プロンプト</span>
@@ -413,8 +761,8 @@
     </div>
   </div>
 
-  <!-- モーダル4：叩き台 -->
-  <div class="modal-overlay" id="modal4" onclick="closeModal(event, 'modal4')">
+  <!-- モーダル4 -->
+  <div class="modal-overlay" id="modal4" onclick="closeModal(event,'modal4')">
     <div class="modal">
       <button class="modal-close" onclick="document.getElementById('modal4').classList.remove('active')">✕</button>
       <span class="tag tag-tips">活用術</span>
@@ -439,14 +787,14 @@
     </div>
   </div>
 
-  <!-- モーダル5：社外秘 -->
-  <div class="modal-overlay" id="modal5" onclick="closeModal(event, 'modal5')">
+  <!-- モーダル5 -->
+  <div class="modal-overlay" id="modal5" onclick="closeModal(event,'modal5')">
     <div class="modal">
       <button class="modal-close" onclick="document.getElementById('modal5').classList.remove('active')">✕</button>
       <span class="tag tag-warn">注意点</span>
       <h2>社外秘情報は入力しない</h2>
       <div class="detail">
-        <p>外部のAIツールに入力した情報は、サービスの学習データに使われる可能性があります。以下の情報は入力しないようにしてください。</p>
+        <p>外部のAIツールに入力した情報は、サービスの学習データに使われる可能性があります。</p>
         <h4>入力してはいけない情報</h4>
         <ul>
           <li>顧客名・顧客の連絡先・契約内容</li>
@@ -463,14 +811,9 @@
   </div>
 
   <script>
-    function openModal(id) {
-      document.getElementById(id).classList.add('active');
-    }
-
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(event, id) {
-      if (event.target === document.getElementById(id)) {
-        document.getElementById(id).classList.remove('active');
-      }
+      if (event.target === document.getElementById(id)) document.getElementById(id).classList.remove('active');
     }
   </script>
 
