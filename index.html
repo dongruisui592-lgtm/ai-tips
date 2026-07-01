@@ -9,46 +9,102 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
-      background: #f5f7fa;
-      color: #333;
+      background: #f0f7f0;
+      color: #2d4a2d;
     }
 
+    /* ヘッダー */
     header {
-      background: #2c3e50;
+      background: linear-gradient(135deg, #1a4a1a 0%, #2d7a2d 50%, #3a9a3a 100%);
       color: white;
-      padding: 24px 32px;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
     }
 
-    header h1 { font-size: 24px; font-weight: bold; }
-    header p { font-size: 14px; color: #aab; margin-top: 4px; }
+    header::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0,40 Q100,10 200,35 Q300,55 400,25 Q500,5 600,30 Q700,50 800,20 Q900,0 1000,30 Q1100,55 1200,35 L1200,60 L0,60 Z' fill='%23f0f7f0'/%3E%3C/svg%3E") no-repeat bottom;
+      background-size: cover;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 28px 40px 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-mascot {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .header-text h1 {
+      font-size: 26px;
+      font-weight: bold;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header-text p {
+      font-size: 14px;
+      color: #b8e6b8;
+      margin-top: 4px;
+    }
+
+    /* 木のデコレーション */
+    .forest-deco {
+      background: #f0f7f0;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 8px 0 0;
+      font-size: 28px;
+    }
 
     main { max-width: 960px; margin: 0 auto; padding: 32px 16px; }
 
     /* お知らせ */
     .notice {
-      background: #fff8e1;
-      border-left: 4px solid #f59e0b;
-      border-radius: 6px;
+      background: white;
+      border-left: 5px solid #3a9a3a;
+      border-radius: 10px;
       padding: 16px 20px;
       margin-bottom: 40px;
+      box-shadow: 0 2px 12px rgba(45,122,45,0.1);
     }
 
-    .notice h2 { font-size: 15px; color: #92400e; margin-bottom: 10px; }
+    .notice h2 { font-size: 15px; color: #1a5a1a; margin-bottom: 10px; }
 
     .notice ul { list-style: none; }
 
     .notice ul li {
       font-size: 14px;
-      padding: 4px 0;
-      border-bottom: 1px solid #fde68a;
+      padding: 5px 0;
+      border-bottom: 1px solid #d4ead4;
+      color: #2d4a2d;
     }
 
     .notice ul li:last-child { border-bottom: none; }
 
     .notice ul li span {
-      color: #b45309;
+      color: #3a9a3a;
       font-size: 12px;
       margin-right: 10px;
+      font-weight: bold;
     }
 
     /* Tips */
@@ -56,8 +112,12 @@
       font-size: 18px;
       font-weight: bold;
       margin-bottom: 20px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #2c3e50;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #3a9a3a;
+      color: #1a4a1a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .cards {
@@ -68,45 +128,59 @@
 
     .card {
       background: white;
-      border-radius: 10px;
+      border-radius: 14px;
       padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      transition: transform 0.2s;
+      box-shadow: 0 3px 12px rgba(45,122,45,0.12);
+      transition: transform 0.2s, box-shadow 0.2s;
       cursor: pointer;
+      border-top: 4px solid #3a9a3a;
     }
 
-    .card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(45,122,45,0.2);
+    }
 
     .card .tag {
       display: inline-block;
-      background: #e0f2fe;
-      color: #0369a1;
       font-size: 11px;
-      padding: 3px 8px;
+      padding: 3px 10px;
       border-radius: 20px;
       margin-bottom: 10px;
+      font-weight: bold;
     }
 
-    .card h3 { font-size: 16px; margin-bottom: 8px; }
+    .tag-prompt { background: #d4ead4; color: #1a5a1a; }
+    .tag-tips { background: #c8e6c8; color: #155a15; }
+    .tag-warn { background: #fde8e8; color: #9a2a2a; }
 
-    .card p { font-size: 14px; color: #555; line-height: 1.6; }
+    .card h3 { font-size: 16px; margin-bottom: 8px; color: #1a4a1a; }
 
-    .card .date { font-size: 12px; color: #999; margin-top: 12px; }
+    .card p { font-size: 14px; color: #4a6a4a; line-height: 1.6; }
+
+    .card .date { font-size: 12px; color: #8aaa8a; margin-top: 12px; }
 
     .card .more {
       font-size: 13px;
-      color: #0369a1;
-      margin-top: 12px;
+      color: #3a9a3a;
+      margin-top: 10px;
       font-weight: bold;
     }
 
     footer {
       text-align: center;
-      padding: 24px;
+      padding: 32px;
       font-size: 13px;
-      color: #999;
+      color: #6a8a6a;
       margin-top: 60px;
-      border-top: 1px solid #e2e8f0;
+      border-top: 2px solid #c8e6c8;
+      background: white;
+    }
+
+    .footer-mascot {
+      width: 48px;
+      vertical-align: middle;
+      margin-right: 8px;
     }
 
     /* モーダル */
@@ -115,7 +189,7 @@
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
+      background: rgba(20,50,20,0.6);
       z-index: 1000;
       justify-content: center;
       align-items: center;
@@ -125,55 +199,73 @@
 
     .modal {
       background: white;
-      border-radius: 12px;
+      border-radius: 16px;
       padding: 32px;
       max-width: 600px;
       width: 90%;
       max-height: 80vh;
       overflow-y: auto;
       position: relative;
+      border-top: 6px solid #3a9a3a;
     }
 
     .modal .tag {
       display: inline-block;
-      background: #e0f2fe;
-      color: #0369a1;
       font-size: 11px;
-      padding: 3px 8px;
+      padding: 3px 10px;
       border-radius: 20px;
       margin-bottom: 12px;
+      font-weight: bold;
     }
 
-    .modal h2 { font-size: 20px; margin-bottom: 16px; }
+    .modal h2 { font-size: 20px; margin-bottom: 16px; color: #1a4a1a; }
 
-    .modal .detail { font-size: 15px; color: #444; line-height: 1.8; }
+    .modal .detail { font-size: 15px; color: #3a5a3a; line-height: 1.8; }
 
-    .modal .detail h4 { margin: 16px 0 8px; color: #2c3e50; }
+    .modal .detail h4 {
+      margin: 16px 0 8px;
+      color: #1a5a1a;
+      font-size: 15px;
+      border-left: 3px solid #3a9a3a;
+      padding-left: 8px;
+    }
 
     .modal .detail ul { padding-left: 20px; }
 
     .modal .detail li { margin-bottom: 6px; }
 
-    .modal .date { font-size: 12px; color: #999; margin-top: 20px; }
+    .modal .detail-image {
+      width: 100%;
+      border-radius: 8px;
+      margin: 12px 0;
+      border: 1px solid #c8e6c8;
+    }
+
+    .modal .date { font-size: 12px; color: #8aaa8a; margin-top: 20px; }
 
     .modal-close {
       position: absolute;
       top: 16px; right: 20px;
       font-size: 24px;
       cursor: pointer;
-      color: #999;
+      color: #8aaa8a;
       background: none;
       border: none;
     }
 
-    .modal-close:hover { color: #333; }
+    .modal-close:hover { color: #1a4a1a; }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>AI活用情報ポータル</h1>
-    <p>社内向け AI ツール活用ナレッジベース</p>
+    <div class="header-inner">
+      <img src="mascot.png" alt="マスコット" class="header-mascot">
+      <div class="header-text">
+        <h1>AI活用情報ポータル</h1>
+        <p>社内向け AI ツール活用ナレッジベース</p>
+      </div>
+    </div>
   </header>
 
   <main>
@@ -190,11 +282,11 @@
 
     <!-- AI活用Tips -->
     <section>
-      <h2 class="section-title">AI活用 Tips</h2>
+      <h2 class="section-title">🌿 AI活用 Tips</h2>
       <div class="cards">
 
         <div class="card" onclick="openModal('modal1')">
-          <span class="tag">活用術</span>
+          <span class="tag tag-tips">活用術</span>
           <h3>ChatGPTで議事録を自動作成する</h3>
           <p>会議の録音や走り書きメモをそのまま貼り付けるだけで、整形された議事録が完成します。</p>
           <div class="date">2026/07/02</div>
@@ -202,7 +294,7 @@
         </div>
 
         <div class="card" onclick="openModal('modal2')">
-          <span class="tag">プロンプト</span>
+          <span class="tag tag-prompt">プロンプト</span>
           <h3>指示は具体的に書く</h3>
           <p>「まとめて」より「3点に絞って箇条書きで要約して」のように、出力形式・量・観点を明示すると精度が上がります。</p>
           <div class="date">2026/07/02</div>
@@ -210,7 +302,7 @@
         </div>
 
         <div class="card" onclick="openModal('modal3')">
-          <span class="tag">プロンプト</span>
+          <span class="tag tag-prompt">プロンプト</span>
           <h3>役割を与える</h3>
           <p>「あなたはベテランの営業担当です」のように役割を設定すると、文体や視点が変わり、より実用的な回答が得られます。</p>
           <div class="date">2026/07/02</div>
@@ -218,7 +310,7 @@
         </div>
 
         <div class="card" onclick="openModal('modal4')">
-          <span class="tag">活用術</span>
+          <span class="tag tag-tips">活用術</span>
           <h3>叩き台作成に使う</h3>
           <p>メール・議事録・企画書の初稿をAIに作らせてから人が修正する流れにすると、作業時間を大幅に短縮できます。</p>
           <div class="date">2026/07/02</div>
@@ -226,7 +318,7 @@
         </div>
 
         <div class="card" onclick="openModal('modal5')">
-          <span class="tag">注意点</span>
+          <span class="tag tag-warn">注意点</span>
           <h3>社外秘情報は入力しない</h3>
           <p>顧客情報・契約内容・個人情報などの社外秘データは外部AIツールに入力しないよう注意してください。</p>
           <div class="date">2026/07/02</div>
@@ -239,6 +331,7 @@
   </main>
 
   <footer>
+    <img src="mascot.png" alt="マスコット" class="footer-mascot">
     &copy; 2026 AI活用情報ポータル｜社内限定
   </footer>
 
@@ -246,7 +339,7 @@
   <div class="modal-overlay" id="modal1" onclick="closeModal(event, 'modal1')">
     <div class="modal">
       <button class="modal-close" onclick="document.getElementById('modal1').classList.remove('active')">✕</button>
-      <span class="tag">活用術</span>
+      <span class="tag tag-tips">活用術</span>
       <h2>ChatGPTで議事録を自動作成する</h2>
       <div class="detail">
         <p>会議の録音テキストや走り書きメモをそのまま貼り付けるだけで、整形された議事録が完成します。</p>
@@ -273,7 +366,7 @@
   <div class="modal-overlay" id="modal2" onclick="closeModal(event, 'modal2')">
     <div class="modal">
       <button class="modal-close" onclick="document.getElementById('modal2').classList.remove('active')">✕</button>
-      <span class="tag">プロンプト</span>
+      <span class="tag tag-prompt">プロンプト</span>
       <h2>指示は具体的に書く</h2>
       <div class="detail">
         <p>AIへの指示が曖昧だと、回答も曖昧になります。出力形式・量・観点を明示することで精度が大幅に上がります。</p>
@@ -299,7 +392,7 @@
   <div class="modal-overlay" id="modal3" onclick="closeModal(event, 'modal3')">
     <div class="modal">
       <button class="modal-close" onclick="document.getElementById('modal3').classList.remove('active')">✕</button>
-      <span class="tag">プロンプト</span>
+      <span class="tag tag-prompt">プロンプト</span>
       <h2>役割を与える</h2>
       <div class="detail">
         <p>AIに役割を設定することで、文体や視点が変わり、より実用的な回答が得られます。</p>
@@ -324,7 +417,7 @@
   <div class="modal-overlay" id="modal4" onclick="closeModal(event, 'modal4')">
     <div class="modal">
       <button class="modal-close" onclick="document.getElementById('modal4').classList.remove('active')">✕</button>
-      <span class="tag">活用術</span>
+      <span class="tag tag-tips">活用術</span>
       <h2>叩き台作成に使う</h2>
       <div class="detail">
         <p>ゼロから書くより、AIに初稿を作らせてから修正する流れにすると作業時間を大幅に短縮できます。</p>
@@ -350,7 +443,7 @@
   <div class="modal-overlay" id="modal5" onclick="closeModal(event, 'modal5')">
     <div class="modal">
       <button class="modal-close" onclick="document.getElementById('modal5').classList.remove('active')">✕</button>
-      <span class="tag">注意点</span>
+      <span class="tag tag-warn">注意点</span>
       <h2>社外秘情報は入力しない</h2>
       <div class="detail">
         <p>外部のAIツールに入力した情報は、サービスの学習データに使われる可能性があります。以下の情報は入力しないようにしてください。</p>
